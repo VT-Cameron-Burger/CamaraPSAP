@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 from datetime import datetime, timedelta, timezone
 import jwt
 from camarapsap.config import settings
-from camarapsap.services.authorization import Scope, TokenType
+from camarapsap.models.auth import Scope, TokenType
 
 
 def create_simple_jwt(payload: dict, expires_in_minutes: int = 60) -> str:
@@ -37,7 +37,7 @@ def validate_simple_jwt(token: str) -> dict:
     )
 
 
-def main():
+def main() -> None:
     """Test JWT token generation and validation."""
     
     print("=" * 60)

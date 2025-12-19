@@ -56,7 +56,7 @@ class Device(BaseModel):
     )
     
     @model_validator(mode='after')
-    def check_at_least_one_identifier(self):
+    def check_at_least_one_identifier(self) -> 'Device':
         if not any([
             self.phone_number,
             self.network_access_identifier,
@@ -78,7 +78,7 @@ class DeviceResponse(Device):
     """
     
     @model_validator(mode='after')
-    def check_max_one_identifier(self):
+    def check_max_one_identifier(self) -> 'DeviceResponse':
         identifiers = sum([
             self.phone_number is not None,
             self.network_access_identifier is not None,

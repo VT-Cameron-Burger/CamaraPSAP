@@ -55,7 +55,7 @@ class DeviceIpv4Addr(BaseModel):
         return v
     
     @model_validator(mode='after')
-    def check_required_fields(self):
+    def check_required_fields(self) -> 'DeviceIpv4Addr':
         if self.private_address is None and self.public_port is None:
             raise ValueError('Either privateAddress or publicPort must be provided')
         return self

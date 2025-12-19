@@ -10,7 +10,7 @@ from ..models.auth import Scope
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 
-async def init_db():
+async def init_db() -> None:
     """Create all database tables."""
     print("Creating database tables...")
     
@@ -21,7 +21,7 @@ async def init_db():
     print("✓ Database tables created successfully")
 
 
-async def seed_clients():
+async def seed_clients() -> None:
     """Seed database with test OAuth clients."""
     print("\nSeeding OAuth clients...")
     
@@ -78,7 +78,7 @@ async def seed_clients():
     print("=" * 60)
 
 
-async def main():
+async def main() -> None:
     """Main initialization function."""
     try:
         await init_db()

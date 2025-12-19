@@ -25,5 +25,5 @@ class Client(Base):
     # Relationships
     device_ppids: Mapped[List["DevicePPID"]] = relationship("DevicePPID", back_populates="client", cascade="all, delete-orphan", lazy="select")
     
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<Client(client_id='{self.client_id}', name='{self.client_name}')>"

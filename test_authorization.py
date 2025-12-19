@@ -5,10 +5,11 @@ import os
 import asyncio
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
-from camarapsap.services.authorization import AuthorizationService, Scope, TokenType
+from camarapsap.services.authorization import AuthorizationService
+from camarapsap.models.auth import Scope, TokenType
 
 
-async def main():
+async def main() -> None:
     """Test authorization service with JWT tokens."""
     
     print("=" * 60)

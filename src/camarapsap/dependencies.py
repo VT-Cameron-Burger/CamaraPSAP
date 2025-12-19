@@ -1,6 +1,6 @@
 """FastAPI dependencies for authentication and authorization."""
 
-from typing import Optional
+from typing import Optional, Callable, Awaitable
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
@@ -44,7 +44,7 @@ async def get_current_token(
     return access_token
 
 
-def require_scope(required_scope: Scope):
+def require_scope(required_scope: Scope) -> Callable[[AccessToken], Awaitable[AccessToken]]:
     """
     Create a dependency that requires a specific scope.
     

@@ -6,12 +6,13 @@ import jwt
 from redis import asyncio as aioredis
 from ..config import settings
 from ..models.auth.token import TokenType, AccessToken
+from ..models.common.device import Device
 
 
 class AuthorizationService:
     """Service for generating and validating JWT access tokens with Redis caching."""
     
-    def __init__(self):
+    def __init__(self) -> None:
         # Redis client for revocation list and rate limiting
         self.redis_client = aioredis.from_url(settings.redis_url, decode_responses=True)
     
@@ -86,7 +87,7 @@ class AuthorizationService:
         authorization_code: str,
         scopes: list[str],
         user_id: str,
-        device_info: Device,
+        device_info: Optional[Device] = None,
         expires_in_minutes: Optional[int] = None
     ) -> AccessToken:
         """
@@ -113,7 +114,7 @@ class AuthorizationService:
         # In production, validate authorization_code and exchange it
         # for an access token after user authentication and consent
         
-        payload = {
+        payload: Dict[str, Any] = {
             "sub": user_id,
             "client_id": client_id,
             "token_type": TokenType.THREE_LEGGED.value,
@@ -122,7 +123,7 @@ class AuthorizationService:
         }
         
         if device_info:
-            payload["device"] = device_info
+            payload["device"] = device_info.model_dump()
         
         token_string = self._create_jwt_token(payload, expires_in_minutes)
         expires_at = datetime.now(timezone.utc) + timedelta(minutes=expires_in_minutes)

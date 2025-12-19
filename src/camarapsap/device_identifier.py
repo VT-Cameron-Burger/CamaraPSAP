@@ -6,6 +6,7 @@ from datetime import datetime
 from sqlalchemy.orm import Session
 from .config import settings
 from .models.auth import AccessToken
+from .models.common.device import Device
 from .models.device_identifier import (
     RequestBody,
     DeviceIdentifier,
@@ -32,7 +33,6 @@ router = APIRouter(
 # Reusable dependency annotations
 CurrentToken = Annotated[AccessToken, Depends(get_current_token)]
 DatabaseSession = Annotated[Session, Depends(get_db)]
-XCorrelator = Annotated[Optional[str], Header(None, alias="x-correlator")]
 
 def get_identifier_service(db: DatabaseSession) -> DeviceIdentifierService:
     """Create a DeviceIdentifierService instance."""
@@ -40,7 +40,7 @@ def get_identifier_service(db: DatabaseSession) -> DeviceIdentifierService:
 
 IdentifierService = Annotated[DeviceIdentifierService, Depends(get_identifier_service)]
 
-def _validate_device_xor_token(request: RequestBody, token: AccessToken):
+def _validate_device_xor_token(request: RequestBody, token: AccessToken) -> Device:
     if request.device and token.device_info:
         raise HTTPException(
             status_code=422,
@@ -73,10 +73,9 @@ def _validate_device_xor_token(request: RequestBody, token: AccessToken):
 )
 async def retrieve_identifier(
     request: RequestBody,
-    x_correlator: XCorrelator,
     token: CurrentToken,
-    db: DatabaseSession,
-    service: IdentifierService
+    service: IdentifierService,
+    x_correlator: Optional[str] = Header(None, alias="x-correlator")
 ) -> DeviceIdentifier:
     """
     Get details about the specific device being used by a given mobile subscriber.
@@ -109,10 +108,9 @@ async def retrieve_identifier(
 )
 async def retrieve_type(
     request: RequestBody,
-    x_correlator: XCorrelator,
     token: CurrentToken,
-    db: DatabaseSession,
-    service: IdentifierService
+    service: IdentifierService,
+    x_correlator: Optional[str] = Header(None, alias="x-correlator")
 ) -> DeviceType:
     """
     Get details about the type of device being used by a given mobile subscriber.
@@ -146,10 +144,9 @@ async def retrieve_type(
 )
 async def retrieve_ppid(
     request: RequestBody,
-    x_correlator: XCorrelator,
     token: CurrentToken,
-    db: DatabaseSession,
-    service: IdentifierService
+    service: IdentifierService,
+    x_correlator: Optional[str] = Header(None, alias="x-correlator")
 ) -> DevicePPID:
     """
     Retrieve PPID.

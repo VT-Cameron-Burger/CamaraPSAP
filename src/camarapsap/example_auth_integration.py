@@ -63,7 +63,7 @@ async def retrieve_identifier_with_auth(
             print(f"Using device from 3-legged token: {device_info}")
         elif request.device:
             # Fall back to request body if provided
-            device_info = request.device.model_dump()
+            device_info = request.device
         else:
             raise HTTPException(
                 status_code=400,
@@ -76,7 +76,7 @@ async def retrieve_identifier_with_auth(
                 status_code=400,
                 detail="Device identifier required in request body for 2-legged tokens"
             )
-        device_info = request.device.model_dump()
+        device_info = request.device
     
     # Your business logic here
     # ... query database, process device info, etc.
