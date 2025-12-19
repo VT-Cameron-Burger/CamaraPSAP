@@ -1,0 +1,25 @@
+# Core dependencies
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+
+# Database
+sqlalchemy>=2.0.0
+asyncpg>=0.29.0
+psycopg2-binary>=2.9.0
+
+# Redis
+redis>=5.0.0
+
+# JWT
+pyjwt>=2.8.0
+
+# Password hashing
+passlib>=1.7.4
+bcrypt>=4.0.0
+
+# HTTP client for testing
+requests>=2.31.0
+
+# Add your project dependencies here
